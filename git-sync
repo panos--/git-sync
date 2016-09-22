@@ -114,7 +114,9 @@ check_initial_file_state()
     local syncNew="$(git config --get --bool branch.$branch_name.syncNewFiles)"
     if [ "true" == "$syncNew" ]; then
 	# allow for new files
-	if [ ! -z "$(git status --porcelain | grep -E '^[^ \?][^M\?] *')" ]; then
+    	if [ ! -z "$(git ls-files -u)" ]; then
+	    echo "NonNewOrModified"
+	elif [ ! -z "$(git status --porcelain | grep -E '^[^ M\?][^M\?] *')" ]; then
 	    echo "NonNewOrModified"
 	fi
     else
